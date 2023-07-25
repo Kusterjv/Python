@@ -1,0 +1,32 @@
+#exempl1
+carteira = {'PETR4', 'CASH3','MGLU3','BBAS3','WEGE3'}
+print(f'Carteira inicial: {carteira}')
+
+carteira.add('ITSA4')
+print(f'Carteira após o ADD(): {carteira}')
+
+carteira.update({'ABEV3','RAIZ4','KLBN11'})
+
+print(f'Carteira após o UPDATE(): {carteira}')
+
+carteira.discard('PETR4')
+print(f'Carteira após DISCARD(): {carteira}')
+
+carteira.remove('ABEV3')
+print(f'Careitra após REMOVE(): {carteira}')
+
+item = carteira.pop()
+print(f'Item removido: {item}')
+print(f'Carteira após pop(): {carteira}')
+
+carteira.clear()
+print(f'Carteira após CLEAR(): {carteira}')
+#result
+Carteira inicial: {'PETR4', 'WEGE3', 'CASH3', 'MGLU3', 'BBAS3'}
+Carteira após o ADD(): {'PETR4', 'ITSA4', 'WEGE3', 'CASH3', 'MGLU3', 'BBAS3'}
+Carteira após o UPDATE(): {'RAIZ4', 'PETR4', 'KLBN11', 'BBAS3', 'ITSA4', 'WEGE3', 'CASH3', 'ABEV3', 'MGLU3'}    
+Carteira após DISCARD(): {'RAIZ4', 'KLBN11', 'BBAS3', 'ITSA4', 'WEGE3', 'CASH3', 'ABEV3', 'MGLU3'}
+Careitra após REMOVE(): {'RAIZ4', 'KLBN11', 'BBAS3', 'ITSA4', 'WEGE3', 'CASH3', 'MGLU3'}
+Item removido: RAIZ4
+Carteira após pop(): {'KLBN11', 'BBAS3', 'ITSA4', 'WEGE3', 'CASH3', 'MGLU3'}
+Carteira após CLEAR(): set()
