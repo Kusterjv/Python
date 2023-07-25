@@ -1,0 +1,72 @@
+#exemplo1
+familia = {
+    'pai': 'José da Silva',
+    'mae': 'Ana Almeida',
+    'filho': 'Cléber da Silva Almeida',
+    'filha': 'Joana da Silva Almeida'
+}
+print(f'Familia: {familia}')
+
+copia_familia = familia.copy()
+
+print(f'Cópia do Dicionário Família: {familia}')
+
+itens = familia.items()
+
+print(f'Itens: {itens}')
+
+for item in itens:
+    print(f'\tChave = {item[0]} e valor será = {item[1]}')
+
+chaves = familia.keys()
+
+print(f'Chaves: {chaves}')
+
+for chave in chaves:
+    print(f'\tChave: {chave}')
+
+valores = familia.values()
+
+print(f'Valores: {valores}')
+
+for valor in valores:
+    print(f'\tValores: {valor}')
+
+familia.setdefault('sobrinho', 'Carlos Ivan')
+
+print(familia)
+
+familia.setdefault('mae', 'Dona Florinda')
+
+print(familia)
+
+chaves = ['filha','filho','mae','pai']
+valor = 0
+
+jogo = dict.fromkeys(chaves, valor)
+
+print(f'Jogo: {jogo}')
+
+#result
+
+Familia: {'pai': 'José da Silva', 'mae': 'Ana Almeida', 'filho': 'Cléber da Silva Almeida', 'filha': 'Joana da Silva Almeida'}
+Cópia do Dicionário Família: {'pai': 'José da Silva', 'mae': 'Ana Almeida', 'filho': 'Cléber da Silva Almeida', 
+'filha': 'Joana da Silva Almeida'}
+Itens: dict_items([('pai', 'José da Silva'), ('mae', 'Ana Almeida'), ('filho', 'Cléber da Silva Almeida'), ('filha', 'Joana da Silva Almeida')])
+        Chave = pai e valor será = José da Silva
+        Chave = mae e valor será = Ana Almeida
+        Chave = filho e valor será = Cléber da Silva Almeida
+        Chave = filha e valor será = Joana da Silva Almeida
+Chaves: dict_keys(['pai', 'mae', 'filho', 'filha'])
+        Chave: pai
+        Chave: mae
+        Chave: filho
+        Chave: filha
+Valores: dict_values(['José da Silva', 'Ana Almeida', 'Cléber da Silva Almeida', 'Joana da Silva Almeida'])     
+        Valores: José da Silva
+        Valores: Ana Almeida
+        Valores: Cléber da Silva Almeida
+        Valores: Joana da Silva Almeida
+{'pai': 'José da Silva', 'mae': 'Ana Almeida', 'filho': 'Cléber da Silva Almeida', 'filha': 'Joana da Silva Almeida', 'sobrinho': 'Carlos Ivan'}
+{'pai': 'José da Silva', 'mae': 'Ana Almeida', 'filho': 'Cléber da Silva Almeida', 'filha': 'Joana da Silva Almeida', 'sobrinho': 'Carlos Ivan'}
+Jogo: {'filha': 0, 'filho': 0, 'mae': 0, 'pai': 0}
