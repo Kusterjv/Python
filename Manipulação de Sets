@@ -13,7 +13,7 @@ carteira.discard('PETR4')
 print(f'Carteira após DISCARD(): {carteira}')
 
 carteira.remove('ABEV3')
-print(f'Careitra após REMOVE(): {carteira}')
+print(f'Carteira após REMOVE(): {carteira}')
 
 item = carteira.pop()
 print(f'Item removido: {item}')
