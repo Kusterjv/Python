@@ -1,0 +1,12 @@
+#Python
+#Repositório para guardar os projetos em Python do qual estou aprendendo.
+
+def monta_computador(cpu, memoria, hd, monitor=27, computador="Dell"):
+    print(f'\tO computador montado foi um {computador}. ')
+    print(f'\tCPU: {cpu}')
+    print(f'\tMemoria: {memoria}Gb')
+    print(f'\tHD: {hd}Tb')
+    print(f'\tMonitor: {monitor} Polegadas')
+
+
+monta_computador('Core i7',16,2)
