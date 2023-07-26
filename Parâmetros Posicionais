@@ -1,0 +1,24 @@
+#Python
+#Repositório para guardar os projetos em Python do qual estou aprendendo.
+
+
+def soma(maximo,*numeros):
+    resultado = 0
+    numeros_somados = []
+
+
+    for numero in numeros:
+        if (resultado + numero) > maximo:
+            break
+        
+        
+        resultado += numero
+        numeros_somados.append(numero)
+
+
+    return resultado, numeros_somados
+
+
+resultado_soma, numeros_somados = soma(100,1,2,3,6,25,40,50,80)
+print(f'Esse é o resultado da soma dos valores: {resultado_soma}')
+print(f'Esse é o resultado dos numeros somados: {numeros_somados}')
