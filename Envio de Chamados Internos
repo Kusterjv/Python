@@ -1,0 +1,154 @@
+#importando as bibliotecas
+try:
+    from IPython.terminal.magics import TryNext
+    import os.path
+    import gspread
+    from oauth2client.service_account import ServiceAccountCredentials
+    from google.auth import credentials
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from googleapiclient.discovery import build
+    from googleapiclient.errors import HttpError
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    from email.mime.base import MIMEBase
+    import smtplib
+
+    print("Bibliotecas conectadas com sucesso!")
+
+except ImportError as e:
+    print("Erro ao importar uma ou mais bibliotecas:", e)
+
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+
+def main(): #fazendo a conexão com a API do Google Cloud
+    creds = None
+
+    if os.path.exists('token.json'):
+        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'client_secret.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+
+        with open('token.json', 'w') as token:
+            token.write(creds.to_json())
+
+    service = build('sheets', 'v4', credentials=creds)
+
+    sheet = service.spreadsheets()
+    result = sheet.values().get(spreadsheetId='1R1kdhnitkB-ErVUtQ3_VZuhdMxfII2X1Bce_X06Isy4',range='Apontamentos').execute()
+    values = result.get('values', [])
+
+    if values:
+        print('Conexão realizada')
+    tickets_enviados = []
+    tickets_nao_enviados = []
+
+    for last_row in values:
+        if len(last_row) > 40 and not last_row[40]:
+            ticket_envio = last_row[2]
+            data = last_row[4]
+            dia = last_row[5]
+            mes = last_row[6]
+            ano = last_row[7]
+            motivo = last_row[9]
+            conhecimento = last_row[12]
+            solicitante = last_row[13]
+            periodo = last_row[14]
+            observa = last_row[16]
+            tecnico = last_row[39]
+            emailEnvi = last_row[40]
+
+            tickets_enviados = []
+            tickets_nao_enviados = []
+
+            if emailEnvi:
+                if emailEnvi.lower() == "sim":
+                    print("\nNão há Tickets para serem enviados.")
+
+            tickets_nao_enviados.append({
+                "ticket": ticket_envio,
+                "tecnico": tecnico
+            })
+
+    if not tickets_nao_enviados:
+        print("\nConferência realizada. Não há Tickets para serem enviados.")
+    else:
+        print("\nTickets com os e-mails não enviados:")
+        for ticket in tickets_nao_enviados:
+            print("Ticket:", ticket["ticket"])
+            print("Técnico:", ticket["tecnico"])
+            print(f"Solicitante: {solicitante}")
+
+    for ticket_info in tickets_nao_enviados:
+        ticket_envio = ticket_info['ticket']
+        tecnico = ticket_info['tecnico']
+
+        email_for_ticket = input(f"Informe o e-mail para o Ticket {ticket_envio}: ")
+
+        if email_for_ticket:
+            print("Enviando o ticket por email...")
+        else:
+            print("Não há nenhum ticket para ser enviado.")
+
+        ticket_info["email"] = email_for_ticket
+
+    for ticket_info in tickets_nao_enviados:
+        print(f"Ticket: {ticket_info['ticket']}, Técnico: {ticket_info['tecnico']}, Solicitante: {solicitante}, E-mail: {ticket_info['email']}")
+
+    username = "rpa@gestoracontabilidade.com.br"
+    password = "Tav33891"
+    mail_from = "rpa@gestoracontabilidade.com.br"
+    mail_to = email_for_ticket
+    mail_subject = f"Avaliação ticket de nº {ticket_envio}"
+
+
+    mimemsg = MIMEMultipart()
+    mimemsg['From'] = mail_from
+    mimemsg['To'] = mail_to
+    mimemsg['Subject'] = mail_subject
+    mimemsg.attach(MIMEText(
+                               f'''
+                                <!DOCTYPE html>
+                                <html>
+                                <body>
+                                    <div>
+                                    <p>Prezado(a), <u><b>{solicitante}</b></u></p>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <p> Atendimento referente a(o) <u><b>{observa}</b></u>, realizado pelo técnico <u><b>{tecnico}</b></u>.</p>
+                                        </div>
+                                        <div>
+                                            <p>Por gentileza, fazer avaliação do ticket de nº <u><b>{ticket_envio}</b></u>, através do link abaixo.</p>
+                                        </div>
+                                        <div>
+                                            <p><a title="link" href="https://forms.gle/oYqnGsMxqm7LhFVj8">Click aqui! Para avaliar o ticket.</a></p>
+                                        </div>
+                                        <div>
+                                            <img src="https://i.ibb.co/qp9n0wR/rpa.jpg" alt="rpa" border="0">
+                                        </div>
+                                    </div>
+                                </body>
+                                </html>
+                                ''', "html", "utf-8"
+                            )
+                   )
+
+
+    connection = smtplib.SMTP(host='smtp.outlook.com', port=587)
+    connection.starttls()
+    connection.login(username, password)
+    connection.send_message(mimemsg)
+    connection.quit()
+
+    print (f"Email enviado com sucesso para {solicitante}.")
+
+if __name__ == "__main__":
+    main()
